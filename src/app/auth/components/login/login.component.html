@@ -1,0 +1,71 @@
+<div class="login">
+  <img class="logo-icon" src="../../../../assets/logo.svg" alt="logo">
+  <div class="login-wrapper">
+    <h1 class="login__title">Добро пожаловать</h1>
+    <h2 class="login__subtitle">Авторизуйтесь чтобы продолжить</h2>
+
+    <div class="login-form-wrapper">
+      <form class="login-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <p class="login__text">Логин*</p>
+        <input
+          type="email"
+          class="login-form__email"
+          placeholder="Введите логин"
+          formControlName="email"
+        />
+
+        <p class="login__text">Пароль*</p>
+        <div *ngIf="hidePassword; else view" class="login-form__password-wrapper" >
+          <input
+            type="password"
+            class="login-form__password"
+            placeholder="Минимум 8 символов"
+            formControlName="password"
+          />
+
+          <img
+            class="login-form__password-icon"
+            src="../../../../assets/eye-hide.svg"
+            alt="eye-hide-icon"
+            (click)="this.hidePassword = !this.hidePassword"
+          />
+        </div>
+
+        <ng-template #view>
+          <div class="login-form__password-wrapper">
+            <input
+              type="text"
+              class="login-form__password"
+              placeholder="Минимум 8 символов"
+              formControlName="password"
+            />
+
+            <img
+              class="login-form__password-icon"
+              src="../../../../assets/eye-view.svg"
+              alt="eye-view-icon"
+              (click)="this.hidePassword = !this.hidePassword"
+            />
+          </div>
+        </ng-template>
+
+        <div class="login-form-recovery-wrapper">
+          <div class="login-form-recovery">
+            <input type="checkbox" class="login-form__checkbox" id="auth-checkbox" />
+            <label class="login-form__checkbox-label" for="auth-checkbox">Запомнить</label>
+          </div>
+
+          <a class="login-form__link" href="#">Забыли пароль?</a>
+        </div>
+
+        <button
+          class="login-form__btn"
+          type="submit"
+        >
+          Войти
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,153 @@
+.logo-icon {
+  display: block;
+  margin: 0 auto;
+  padding-bottom: 100px;
+}
+
+.login {
+  margin: 274px auto;
+  &-wrapper {
+    margin: 0 auto;
+    max-width: 410px;
+    width: 100%;
+  }
+
+  &__title {
+    font-family: 'Inter 700', sans-serif;
+    font-size: 36px;
+    letter-spacing: -0.72px;
+    line-height: 56px;
+    padding-bottom: 8px;
+    color: #101D2D;
+  }
+
+  &__subtitle {
+    font-family: 'Inter 400', sans-serif;
+    letter-spacing: -0.32px;
+    line-height: 100%;
+    padding-bottom: 40px;
+    color: #6F727A;
+  }
+
+  &__text {
+    font-family: 'Inter 500', sans-serif;
+    letter-spacing: -0.28px;
+    line-height: 100%;
+    font-size: 14px;
+    padding-bottom: 13px;
+    color: #101D2D;
+  }
+}
+
+.login-form {
+  &__email, &__password {
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #E0E2E7;
+    padding: 18px 24px;
+    margin-bottom: 24px;
+    color: #101D2D;
+    font-family: 'Inter 400', sans-serif;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: -0.28px;
+
+    &::placeholder {
+      color: #6F727A;
+      font-family: 'Inter 400', sans-serif;
+      font-size: 14px;
+      line-height: 100%;
+      letter-spacing: -0.28px;
+    }
+  }
+
+  &__password {
+    margin-bottom: 30px;
+  }
+
+  &__link {
+    color: #4C54F4;
+    font-family: 'Inter 500', sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.28px;
+  }
+
+  &__btn {
+    display: flex;
+    margin: 0 auto;
+    width: 118px;
+    height: 54px;
+    padding: 16px 32px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    background: #4C54F4;
+    color: #FFF;
+    font-family: 'Inter 600', sans-serif;
+    font-size: 18px;
+    line-height: normal;
+  }
+}
+
+.login-form {
+  &__password-wrapper {
+    position: relative;
+  }
+
+  &__password-icon {
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+
+  &-recovery-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+}
+
+// Custom checkbox
+
+.login-form__checkbox {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+
+  &-label {
+    color: #101D2D;
+    font-family: 'Inter 400', sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.28px;
+  }
+
+  &+label {
+    display: inline-flex;
+    align-items: center;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      padding: 1px;
+      border: 1px solid #E0E2E7;
+      border-radius: 6px;
+      margin-right: 10px;
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+  }
+
+  &:checked+label::before {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background-color: #4C54F4;
+    background-image: url("../../../../assets/check.svg");
+  }
+}
