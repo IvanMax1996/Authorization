@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {LoginRequestInterface} from "../types/loginRequest.interface";
 import {CurrentUserInterface} from "../types/currentUser.interface";
 import {Observable} from "rxjs";
@@ -8,9 +8,8 @@ import {Observable} from "rxjs";
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  login(data: LoginRequestInterface): Observable<CurrentUserInterface> {
-    const url = "http://51.158.107.27:82/api/login"
-
-    return this.http.post<any>(url, data)
+  login(url: string, data: LoginRequestInterface): Observable<any> {
+    const myHeaders = new HttpHeaders().set("Accept", "application/json");
+    return this.http.post<any>(url, data, {headers: myHeaders})
   }
 }

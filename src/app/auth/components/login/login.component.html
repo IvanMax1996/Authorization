@@ -11,7 +11,7 @@
           type="email"
           class="login-form__email"
           placeholder="Введите логин"
-          formControlName="email"
+          formControlName="login"
         />
 
         <p class="login__text">Пароль*</p>
@@ -51,7 +51,12 @@
 
         <div class="login-form-recovery-wrapper">
           <div class="login-form-recovery">
-            <input type="checkbox" class="login-form__checkbox" id="auth-checkbox" />
+            <input
+              type="checkbox"
+              class="login-form__checkbox"
+              id="auth-checkbox"
+              formControlName="checked"
+            />
             <label class="login-form__checkbox-label" for="auth-checkbox">Запомнить</label>
           </div>
 
