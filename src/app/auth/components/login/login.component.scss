@@ -76,6 +76,7 @@
 
   &__btn {
     display: flex;
+    cursor: pointer;
     margin: 0 auto;
     width: 118px;
     height: 54px;
@@ -132,6 +133,7 @@
 
     &::before {
       content: '';
+      cursor: pointer;
       display: inline-block;
       width: 18px;
       height: 18px;

@@ -15,7 +15,7 @@
         />
 
         <p class="login__text">Пароль*</p>
-        <div *ngIf="hidePassword; else view" class="login-form__password-wrapper" >
+        <div *ngIf="hidePassword; else viewPassword" class="login-form__password-wrapper" >
           <input
             type="password"
             class="login-form__password"
@@ -31,7 +31,7 @@
           />
         </div>
 
-        <ng-template #view>
+        <ng-template #viewPassword>
           <div class="login-form__password-wrapper">
             <input
               type="text"

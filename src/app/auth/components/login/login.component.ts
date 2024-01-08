@@ -11,7 +11,6 @@ import {HttpHeaders} from "@angular/common/http";
 export class LoginComponent implements OnInit {
   form!: FormGroup
   hidePassword: boolean = true
-  check: boolean = false
 
   constructor(private fb: FormBuilder, private authService: AuthService) {}
 
@@ -23,7 +22,7 @@ export class LoginComponent implements OnInit {
     this.form = this.fb.group({
       login: '',
       password: '',
-      checked: true
+      checked: false
     })
   }
 
@@ -33,5 +32,4 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(url, request).subscribe(console.log)
   }
-
 }
