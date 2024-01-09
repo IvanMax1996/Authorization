@@ -41,7 +41,7 @@
 }
 
 .login-form {
-  &__email, &__password {
+  &__email.ng-untouched, &__email.ng-touched, &__password, &__password.ng-touched, &__password.ng-untouched {
     width: 100%;
     border-radius: 5px;
     border: 1px solid #E0E2E7;
@@ -60,6 +60,16 @@
       line-height: 100%;
       letter-spacing: -0.28px;
     }
+  }
+
+  &__email.ng-touched.ng-invalid, &__password.ng-touched.ng-invalid  {
+    color: #FC5A5A;
+    border: 1px solid #FC5A5A;
+  }
+
+  &__email.ng-touched.ng-valid, &__password.ng-touched.ng-valid {
+    color: #249F5D;
+    border: 1px solid #249F5D;
   }
 
   &__password {
@@ -89,19 +99,27 @@
     font-family: 'Inter 600', sans-serif;
     font-size: 18px;
     line-height: normal;
+
+    &-disabled {
+      background-color: #8287F0;
+    }
   }
 }
 
 .login-form {
-  &__password-wrapper {
+  &__password-wrapper, &__email-wrapper {
     position: relative;
   }
 
-  &__password-icon {
+  &__password-icon, &__email-icon {
     cursor: pointer;
     position: absolute;
-    top: 15px;
+    top: 17px;
     right: 15px;
+  }
+
+  &__email-icon {
+    cursor: auto;
   }
 
   &-recovery-wrapper {
@@ -154,3 +172,6 @@
     background-image: url("../../../../assets/check.svg");
   }
 }
+
+//input.ng-invalid {border:solid red 2px;}
+//input.ng-valid {border:solid green 2px;}

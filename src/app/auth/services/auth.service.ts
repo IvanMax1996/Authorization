@@ -8,8 +8,8 @@ import {Observable} from "rxjs";
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  login(url: string, data: LoginRequestInterface): Observable<any> {
+  login(url: string, data: LoginRequestInterface): Observable<CurrentUserInterface> {
     const myHeaders = new HttpHeaders().set("Accept", "application/json");
-    return this.http.post<any>(url, data, {headers: myHeaders})
+    return this.http.post<CurrentUserInterface>(url, data, {headers: myHeaders})
   }
 }

@@ -5,14 +5,36 @@
     <h2 class="login__subtitle">Авторизуйтесь чтобы продолжить</h2>
 
     <div class="login-form-wrapper">
-      <form class="login-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <form class="login-form" novalidate [formGroup]="form" (ngSubmit)="onSubmit()">
         <p class="login__text">Логин*</p>
-        <input
-          type="email"
-          class="login-form__email"
-          placeholder="Введите логин"
-          formControlName="login"
-        />
+        <div class="login-form__email-wrapper">
+          <input
+            type="email"
+            class="login-form__email"
+            placeholder="Введите логин"
+            formControlName="login"
+          />
+
+          <ng-container
+            *ngIf="form.controls['login'].touched && form.controls['login'].invalid"
+          >
+            <img
+              class="login-form__email-icon"
+              src="../../../../assets/warning.svg"
+              alt="warning-icon"
+            />
+          </ng-container>
+
+          <ng-container
+            *ngIf="form.controls['login'].touched && form.controls['login'].valid"
+          >
+            <img
+              class="login-form__email-icon"
+              src="../../../../assets/validation.svg"
+              alt="warning-icon"
+            />
+          </ng-container>
+        </div>
 
         <p class="login__text">Пароль*</p>
         <div *ngIf="hidePassword; else viewPassword" class="login-form__password-wrapper" >
@@ -36,7 +58,7 @@
             <input
               type="text"
               class="login-form__password"
-              placeholder="Минимум 8 символов"
+              placeholder="Минимум 6 символов"
               formControlName="password"
             />
 
@@ -64,8 +86,10 @@
         </div>
 
         <button
+          [ngClass]="{'login-form__btn-disabled': this.form.invalid}"
           class="login-form__btn"
           type="submit"
+          [disabled]="form.invalid"
         >
           Войти
         </button>
