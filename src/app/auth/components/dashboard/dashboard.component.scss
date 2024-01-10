@@ -1,0 +1,43 @@
+.dashboard {
+  margin: 68px 50px;
+
+  &-wrapper {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    margin-bottom: 30px;
+  }
+
+  &__icon {
+    width: 65px;
+    height: 65px;
+  }
+
+  &__name-text {
+    color: #101D2D;
+    font-family: 'Inter 700', sans-serif;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: -0.28px;
+    margin-bottom: 6px;
+  }
+
+  &__id-text, &__span-id {
+    color: #101D2D;
+    font-family: 'Inter 500', sans-serif;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: -0.28px;
+  }
+
+  &__span-id {
+    font-family: 'Inter 700', sans-serif;
+  }
+
+  &__message-text {
+    color: #101D2D;
+    font-family: 'Inter 500', sans-serif;
+    font-size: 18px;
+    line-height: normal;
+  }
+}

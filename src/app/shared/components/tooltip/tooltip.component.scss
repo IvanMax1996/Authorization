@@ -1,5 +1,38 @@
-div {
-  width: 100px;
-  height: 200px;
-  background: red;
+.tooltip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  max-width: 320px;
+  width: 100%;
+  padding: 18px 46px 18px 12px;
+  border-radius: 5px;
+  box-shadow: 0 10px 25px 0 rgba(68, 68, 68, 0.20);
+  border-left: 5px solid #FC5A5A;
+  animation: view 2s;
+
+  &__btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    cursor: pointer;
+  }
+
+  &__text {
+    color: #6F727A;
+    font-family: 'Inter 400', sans-serif;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: -0.32px;
+  }
+}
+
+@keyframes view {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
