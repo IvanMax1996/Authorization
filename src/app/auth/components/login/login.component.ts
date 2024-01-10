@@ -1,9 +1,9 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
-import {Observable} from "rxjs";
-import {CurrentUserInterface} from "../../types/currentUser.interface";
 import {PersistenceService} from "../../../shared/services/persistence.service";
+import {CurrentUserInterface} from "../../types/currentUser.interface";
+import {HostDirective} from "../../directives/host.directive";
 
 @Component({
   selector: 'login',
@@ -11,18 +11,17 @@ import {PersistenceService} from "../../../shared/services/persistence.service";
   styleUrls: ['login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  @ViewChild(HostDirective, {read: ViewContainerRef}) hostView!: ViewContainerRef
   form!: FormGroup
   hidePassword: boolean = true
+  response!: CurrentUserInterface | undefined
+  error!: string | undefined
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private persistenceService: PersistenceService
   ) {}
-
-  ngOnInit() {
-    this.initializeForm()
-  }
 
   initializeForm(): void {
     this.form = this.fb.group({
@@ -37,14 +36,24 @@ export class LoginComponent implements OnInit {
     const {checked, ...request} = this.form.value
 
     this.authService.login(url, request).subscribe({
-      next: (data: any) => {
+      next: (data: CurrentUserInterface) => {
+        this.response = data
+
         if (checked) {
           const tokens = data.tokens
           this.persistenceService.setCookie('tokens', tokens)
         }
       },
-      error: () => console.log(),
-      complete: () => {}
+      error: error => {
+        if (error.error.hasError) {
+          this.error = error.error.errors[0]
+          console.log(this.error)
+        }
+      }
     })
+  }
+
+  ngOnInit() {
+    this.initializeForm()
   }
 }

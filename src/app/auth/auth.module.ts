@@ -5,6 +5,8 @@ import {CommonModule} from "@angular/common";
 import {AuthService} from "./services/auth.service";
 import {HttpClientModule} from "@angular/common/http";
 import {PersistenceService} from "../shared/services/persistence.service";
+import {HostDirective} from "./directives/host.directive";
+import {TooltipComponent} from "../shared/components/tooltip/tooltip.component";
 
 @NgModule({
   imports: [
@@ -13,7 +15,7 @@ import {PersistenceService} from "../shared/services/persistence.service";
     HttpClientModule
   ],
   exports: [LoginComponent],
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, HostDirective, TooltipComponent],
   providers: [AuthService, PersistenceService]
 })
 export class AuthModule {}
