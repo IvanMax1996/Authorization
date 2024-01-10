@@ -13,8 +13,9 @@ export class DashboardComponent {
   avatar: string | undefined
   ID: string | undefined
   name: string | undefined
-  message!: string
+  message: string = ''
   count: number = 0
+  arr: Array<number> = []
 
   constructor(private route: ActivatedRoute) {
     route.queryParams.subscribe(
@@ -27,27 +28,41 @@ export class DashboardComponent {
   }
 
   callTooltip(message: string, borderLeft?: string, fill?: string): void {
-    if (this.count < 3 && message !== undefined) {
+    if (this.count < 3 && message !== '') {
       const dynamicComponent = this.hostView.createComponent(TooltipComponent)
 
-      dynamicComponent.instance.message = message
+      this.arr.push(dynamicComponent.location.nativeElement['__ngContext__'])
+
       if (fill !== undefined) dynamicComponent.instance.fill = fill
       if (borderLeft !== undefined) dynamicComponent.instance.borderLeft = borderLeft
+      dynamicComponent.instance.message = message
 
       dynamicComponent.instance.closeTooltip = (): void => {
+        --this.count
+
+        const index = this.arr.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
+        if (index !== -1) this.arr.splice(index, 1);
+
+        console.log(this.arr)
         dynamicComponent.instance.hide = true
+
         setTimeout(() => {
           dynamicComponent.destroy()
-          --this.count
         }, 800)
       }
 
       setTimeout(() => {
+        const result = this.arr.includes(dynamicComponent.location.nativeElement['__ngContext__'])
+        console.log(result)
+        if (result) --this.count
+        const index = this.arr.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
+        if (index !== -1) this.arr.splice(index, 1);
         dynamicComponent.destroy()
-        --this.count
+        console.log(this.arr)
       }, 15000)
 
       ++this.count
+      // console.log(this.count)
     }
   }
 }

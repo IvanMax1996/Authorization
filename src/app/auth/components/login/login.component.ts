@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
   response: CurrentUserInterface | undefined
   message: string | undefined
   count: number = 0
+  arr: Array<number> = []
 
   constructor(
     private fb: FormBuilder,
@@ -63,20 +64,29 @@ export class LoginComponent implements OnInit {
 
           if (this.count < 3) {
             const dynamicComponent = this.hostView.createComponent(TooltipComponent)
+            this.arr.push(dynamicComponent.location.nativeElement['__ngContext__'])
 
             if (this.message !== undefined) dynamicComponent.instance.message = this.message
 
             dynamicComponent.instance.closeTooltip = (): void => {
+              --this.count
+
+              const index = this.arr.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
+              if (index !== -1) this.arr.splice(index, 1);
+
               dynamicComponent.instance.hide = true
+
               setTimeout(() => {
                 dynamicComponent.destroy()
-                --this.count
               }, 800)
             }
 
             setTimeout(() => {
+              const result = this.arr.includes(dynamicComponent.location.nativeElement['__ngContext__'])
+              if (result) --this.count
+              const index = this.arr.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
+              if (index !== -1) this.arr.splice(index, 1);
               dynamicComponent.destroy()
-              --this.count
             }, 15000)
 
             ++this.count
