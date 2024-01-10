@@ -1,11 +1,25 @@
 .dashboard {
   margin: 68px 50px;
 
+  &__tooltip {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 68px;
+    right: 50px;
+    gap: 10px;
+  }
+
   &-wrapper {
     display: flex;
     align-items: center;
     column-gap: 10px;
     margin-bottom: 30px;
+
+    &-buttons {
+      display: flex;
+      column-gap: 32px;
+    }
   }
 
   &__icon {
@@ -38,6 +52,58 @@
     color: #101D2D;
     font-family: 'Inter 500', sans-serif;
     font-size: 18px;
-    line-height: normal;
+    margin-bottom: 16px;
+  }
+
+  &__input {
+    border-radius: 5px;
+    border: 1px solid #E0E2E7;
+    padding: 16px;
+    max-width: 620px;
+    width: 100%;
+    color: #101D2D;
+    font-family: 'Inter 400', sans-serif;
+    font-size: 14px;
+    margin-bottom: 26px;
+
+    &::placeholder {
+      color: #6F727A;
+      font-family: 'Inter 400', sans-serif;
+      font-size: 14px;
+    }
+  }
+}
+
+.button {
+  &__fail, &__warning, &__success, &__message {
+    cursor: pointer;
+    border-radius: 12px;
+    height: 54px;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Inter 600', sans-serif;
+    font-size: 18px;
+  }
+
+  &__fail {
+    background: #FC5A5A;
+    color: #FFF;
+  }
+
+  &__warning {
+    background: #FCCA00;
+    color: #101D2D;
+  }
+
+  &__success {
+    background: #249F5D;
+    color: #FFF;
+  }
+
+  &__message {
+    background: #4C54F4;
+    color: #FFF;
   }
 }

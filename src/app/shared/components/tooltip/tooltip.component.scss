@@ -3,13 +3,20 @@
   display: flex;
   align-items: center;
   column-gap: 10px;
-  max-width: 320px;
-  width: 100%;
-  padding: 18px 46px 18px 12px;
+  width: 320px;
+  padding: 18px 18px 18px 12px;
   border-radius: 5px;
   box-shadow: 0 10px 25px 0 rgba(68, 68, 68, 0.20);
-  border-left: 5px solid #FC5A5A;
-  animation: view 2s;
+  animation: view 1s;
+
+  &__hide {
+    animation: hide 1s;
+  }
+
+  &__icon {
+    width: 20px;
+    height: 20px;
+  }
 
   &__btn {
     position: absolute;
@@ -30,9 +37,18 @@
 
 @keyframes view {
   from {
-    opacity: 0;
+    transform: translateY(-100px);
   }
   to {
-    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hide {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-300px);
   }
 }

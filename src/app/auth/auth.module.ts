@@ -1,6 +1,6 @@
 import {NgModule} from "@angular/core";
 import {LoginComponent} from "./components/login/login.component";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {AuthService} from "./services/auth.service";
 import {HttpClientModule} from "@angular/common/http";
@@ -13,7 +13,8 @@ import {DashboardComponent} from "./components/dashboard/dashboard.component";
   imports: [
     ReactiveFormsModule,
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   exports: [LoginComponent],
   declarations: [LoginComponent, HostDirective, TooltipComponent, DashboardComponent],

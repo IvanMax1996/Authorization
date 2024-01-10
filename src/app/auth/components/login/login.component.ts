@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   form!: FormGroup
   hidePassword: boolean = true
   response: CurrentUserInterface | undefined
-  error: string | undefined
+  message: string | undefined
   count: number = 0
 
   constructor(
@@ -59,16 +59,19 @@ export class LoginComponent implements OnInit {
       },
       error: error => {
         if (error.error.hasError) {
-          this.error = error.error.errors[0]
+          this.message = error.error.errors[0]
 
           if (this.count < 3) {
             const dynamicComponent = this.hostView.createComponent(TooltipComponent)
 
-            if (this.error !== undefined) dynamicComponent.instance.error = this.error
+            if (this.message !== undefined) dynamicComponent.instance.message = this.message
 
             dynamicComponent.instance.closeTooltip = (): void => {
-              dynamicComponent.destroy()
-              --this.count
+              dynamicComponent.instance.hide = true
+              setTimeout(() => {
+                dynamicComponent.destroy()
+                --this.count
+              }, 800)
             }
 
             setTimeout(() => {

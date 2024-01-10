@@ -1,4 +1,8 @@
 <div class="dashboard">
+  <div class="dashboard__tooltip">
+    <div *host></div>
+  </div>
+
   <div class="dashboard-wrapper">
     <img class="dashboard__icon" [src]="avatar" alt="avatar-icon" >
     <div class="dashboard-wrapper-info">
@@ -11,4 +15,16 @@
   </div>
 
   <h3 class="dashboard__message-text">Сообщение</h3>
+  <input
+    class="dashboard__input" name='message'
+    [(ngModel)]="message"
+    placeholder="Введите сообщение"
+  />
+
+  <div class="dashboard-wrapper-buttons button">
+    <button (click)="callTooltip('Сообщение об ошибке')" class="button__fail">Ошибка</button>
+    <button (click)="callTooltip('Пердупредительное сообщение', '6px solid #FCCA00','#FCCA00')" class="button__warning">Предупреждение</button>
+    <button (click)="callTooltip('Сообщение об успехе', '6px solid #249F5D', '#249F5D')" class="button__success">Успех</button>
+    <button (click)="callTooltip(message, '6px solid #4C54F4', '#4C54F4')" class="button__message">Сообщение</button>
+  </div>
 </div>
