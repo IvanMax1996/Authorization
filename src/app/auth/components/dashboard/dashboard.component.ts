@@ -62,7 +62,7 @@ export class DashboardComponent {
 
           this.arrayComponentId.splice(index, 1);
           this.arrayComponent.splice(index, 1)
-        }, 500)
+        }, 300)
       }
 
       dynamicComponent.instance.closeTooltip = (): void => {
@@ -77,7 +77,7 @@ export class DashboardComponent {
 
         setTimeout((): void => {
           dynamicComponent.destroy()
-        }, 500)
+        }, 300)
       }
 
       setTimeout((): void => {

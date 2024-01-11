@@ -103,7 +103,7 @@ export class LoginComponent implements OnInit {
 
               this.arrayComponentId.splice(index, 1);
               this.arrayComponent.splice(index, 1)
-            }, 500)
+            }, 300)
           }
 
           dynamicComponent.instance.closeTooltip = (): void => {
@@ -118,7 +118,7 @@ export class LoginComponent implements OnInit {
 
             setTimeout((): void => {
               dynamicComponent.destroy()
-            }, 500)
+            }, 300)
           }
 
           setTimeout((): void => {

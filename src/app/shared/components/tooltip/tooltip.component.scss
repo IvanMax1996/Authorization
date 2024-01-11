@@ -7,10 +7,10 @@
   padding: 18px 18px 18px 12px;
   border-radius: 5px;
   box-shadow: 0 10px 25px 0 rgba(68, 68, 68, 0.20);
-  animation: view 1s;
+  animation: view 0.5s;
 
   &__hide {
-    animation: hide 1s;
+    animation: hide 0.5s;
   }
 
   &__icon {
