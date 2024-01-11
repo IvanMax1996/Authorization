@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   response: CurrentUserInterface | undefined
   message: string | undefined
   count: number = 0
-  arr: Array<number> = []
+  arrayComponent: Array<number> = []
 
   constructor(
     private fb: FormBuilder,
@@ -59,38 +59,39 @@ export class LoginComponent implements OnInit {
           }).then();
       },
       error: error => {
-        if (error.error.hasError) {
-          this.message = error.error.errors[0]
+        console.log(error)
+        if (error.status === 400) this.message = error.error.errors[0]
+        if (error.status === 429) this.message = error.error.Message
+        if (error.status === 0) this.message = 'Неизвестная ошибка'
 
-          if (this.count < 3) {
-            const dynamicComponent = this.hostView.createComponent(TooltipComponent)
-            this.arr.push(dynamicComponent.location.nativeElement['__ngContext__'])
+        if (this.count < 3) {
+          const dynamicComponent = this.hostView.createComponent(TooltipComponent)
+          this.arrayComponent.push(dynamicComponent.location.nativeElement['__ngContext__'])
 
-            if (this.message !== undefined) dynamicComponent.instance.message = this.message
+          if (this.message !== undefined) dynamicComponent.instance.message = this.message
 
-            dynamicComponent.instance.closeTooltip = (): void => {
-              --this.count
+          dynamicComponent.instance.closeTooltip = (): void => {
+            --this.count
 
-              const index = this.arr.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
-              if (index !== -1) this.arr.splice(index, 1);
+            const index = this.arrayComponent.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
+            if (index !== -1) this.arrayComponent.splice(index, 1);
 
-              dynamicComponent.instance.hide = true
-
-              setTimeout(() => {
-                dynamicComponent.destroy()
-              }, 800)
-            }
+            dynamicComponent.instance.hide = true
 
             setTimeout(() => {
-              const result = this.arr.includes(dynamicComponent.location.nativeElement['__ngContext__'])
-              if (result) --this.count
-              const index = this.arr.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
-              if (index !== -1) this.arr.splice(index, 1);
               dynamicComponent.destroy()
-            }, 15000)
-
-            ++this.count
+            }, 800)
           }
+
+          setTimeout(() => {
+            const result = this.arrayComponent.includes(dynamicComponent.location.nativeElement['__ngContext__'])
+            if (result) --this.count
+            const index = this.arrayComponent.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
+            if (index !== -1) this.arrayComponent.splice(index, 1);
+            dynamicComponent.destroy()
+          }, 15000)
+
+          ++this.count
         }
       }
     })

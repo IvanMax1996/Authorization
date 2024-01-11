@@ -15,7 +15,7 @@ export class DashboardComponent {
   name: string | undefined
   message: string = ''
   count: number = 0
-  arr: Array<number> = []
+  arrayComponent: Array<number> = []
 
   constructor(private route: ActivatedRoute) {
     route.queryParams.subscribe(
@@ -31,7 +31,7 @@ export class DashboardComponent {
     if (this.count < 3 && message !== '') {
       const dynamicComponent = this.hostView.createComponent(TooltipComponent)
 
-      this.arr.push(dynamicComponent.location.nativeElement['__ngContext__'])
+      this.arrayComponent.push(dynamicComponent.location.nativeElement['__ngContext__'])
 
       if (fill !== undefined) dynamicComponent.instance.fill = fill
       if (borderLeft !== undefined) dynamicComponent.instance.borderLeft = borderLeft
@@ -40,10 +40,10 @@ export class DashboardComponent {
       dynamicComponent.instance.closeTooltip = (): void => {
         --this.count
 
-        const index = this.arr.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
-        if (index !== -1) this.arr.splice(index, 1);
+        const index = this.arrayComponent.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
+        if (index !== -1) this.arrayComponent.splice(index, 1);
 
-        console.log(this.arr)
+        console.log(this.arrayComponent)
         dynamicComponent.instance.hide = true
 
         setTimeout(() => {
@@ -52,17 +52,16 @@ export class DashboardComponent {
       }
 
       setTimeout(() => {
-        const result = this.arr.includes(dynamicComponent.location.nativeElement['__ngContext__'])
+        const result = this.arrayComponent.includes(dynamicComponent.location.nativeElement['__ngContext__'])
         console.log(result)
         if (result) --this.count
-        const index = this.arr.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
-        if (index !== -1) this.arr.splice(index, 1);
+        const index = this.arrayComponent.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
+        if (index !== -1) this.arrayComponent.splice(index, 1);
         dynamicComponent.destroy()
-        console.log(this.arr)
+        console.log(this.arrayComponent)
       }, 15000)
 
       ++this.count
-      // console.log(this.count)
     }
   }
 }
