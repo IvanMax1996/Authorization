@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
+import {Component, ComponentRef, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {PersistenceService} from "../../../shared/services/persistence.service";
@@ -6,6 +6,7 @@ import {CurrentUserInterface} from "../../types/currentUser.interface";
 import {HostDirective} from "../../directives/host.directive";
 import {TooltipComponent} from "../../../shared/components/tooltip/tooltip.component";
 import {Router} from "@angular/router";
+import {TokenInterface} from "../../types/token.interface";
 
 @Component({
   selector: 'login',
@@ -18,8 +19,8 @@ export class LoginComponent implements OnInit {
   hidePassword: boolean = true
   response: CurrentUserInterface | undefined
   message: string | undefined
-  count: number = 0
-  arrayComponent: Array<number> = []
+  arrayComponentId: Array<number> = []
+  arrayComponent: Array<ComponentRef<TooltipComponent>> = []
 
   constructor(
     private fb: FormBuilder,
@@ -41,11 +42,11 @@ export class LoginComponent implements OnInit {
     const {checked, ...request} = this.form.value
 
     this.authService.login(url, request).subscribe({
-      next: (data: CurrentUserInterface) => {
+      next: (data: CurrentUserInterface): void => {
         this.response = data
 
         if (checked) {
-          const tokens = data.tokens
+          const tokens: TokenInterface = data.tokens
           this.persistenceService.setCookie('tokens', tokens)
         }
 
@@ -59,39 +60,77 @@ export class LoginComponent implements OnInit {
           }).then();
       },
       error: error => {
-        console.log(error)
-        if (error.status === 400) this.message = error.error.errors[0]
-        if (error.status === 429) this.message = error.error.Message
-        if (error.status === 0) this.message = 'Неизвестная ошибка'
+        switch(error.status) {
+          case 400:
+            this.message = error.error.errors[0]
+            break
+          case 429:
+            this.message = error.error.Message
+            break
+          case 0:
+            this.message = 'Неизвестная ошибка'
+            break
+        }
 
-        if (this.count < 3) {
-          const dynamicComponent = this.hostView.createComponent(TooltipComponent)
-          this.arrayComponent.push(dynamicComponent.location.nativeElement['__ngContext__'])
+        if (this.arrayComponentId.length < 4) {
+          const dynamicComponent: ComponentRef<TooltipComponent> = this.hostView.createComponent(TooltipComponent)
+          this.arrayComponentId.push(dynamicComponent.location.nativeElement['__ngContext__'])
+          this.arrayComponent.push(dynamicComponent)
 
           if (this.message !== undefined) dynamicComponent.instance.message = this.message
 
-          dynamicComponent.instance.closeTooltip = (): void => {
-            --this.count
+          if (this.arrayComponentId.length === 4) {
+            let locationTooltip: number = this.arrayComponentId[0]
 
-            const index = this.arrayComponent.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
-            if (index !== -1) this.arrayComponent.splice(index, 1);
+            this.arrayComponentId.forEach((item: number): void => {
+              if (locationTooltip > item) locationTooltip = item
+            })
+
+            const index: number = this.arrayComponentId.indexOf(locationTooltip);
+
+            this.arrayComponent.forEach((item: any): void => {
+              if (item.location.nativeElement['__ngContext__'] === locationTooltip) {
+                item.instance.hide = true
+              }
+            })
+
+            setTimeout((): void => {
+              this.arrayComponent.forEach((item: any): void => {
+                if (item.location.nativeElement['__ngContext__'] === locationTooltip) {
+                  item.destroy()
+                }
+              })
+
+              this.arrayComponentId.splice(index, 1);
+              this.arrayComponent.splice(index, 1)
+            }, 500)
+          }
+
+          dynamicComponent.instance.closeTooltip = (): void => {
+            const index: number = this.arrayComponentId.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
+
+            if (index !== -1) {
+              this.arrayComponent.splice(index, 1)
+              this.arrayComponentId.splice(index, 1);
+            }
 
             dynamicComponent.instance.hide = true
 
-            setTimeout(() => {
+            setTimeout((): void => {
               dynamicComponent.destroy()
-            }, 800)
+            }, 500)
           }
 
-          setTimeout(() => {
-            const result = this.arrayComponent.includes(dynamicComponent.location.nativeElement['__ngContext__'])
-            if (result) --this.count
-            const index = this.arrayComponent.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
-            if (index !== -1) this.arrayComponent.splice(index, 1);
+          setTimeout((): void => {
+            const index: number = this.arrayComponentId.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
+
+            if (index !== -1) {
+              this.arrayComponent.splice(index, 1)
+              this.arrayComponentId.splice(index, 1);
+            }
+
             dynamicComponent.destroy()
           }, 15000)
-
-          ++this.count
         }
       }
     })

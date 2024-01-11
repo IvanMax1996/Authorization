@@ -14,9 +14,8 @@ export class DashboardComponent {
   ID: string | undefined
   name: string | undefined
   message: string = ''
-  count: number = 0
-  arrayComponent: Array<number> = []
-  arrayTwo: Array<ComponentRef<TooltipComponent>> = []
+  arrayComponentId: Array<number> = []
+  arrayComponent: Array<ComponentRef<TooltipComponent>> = []
 
   constructor(private route: ActivatedRoute) {
     route.queryParams.subscribe(
@@ -29,78 +28,68 @@ export class DashboardComponent {
   }
 
   callTooltip(message: string, borderLeft?: string, fill?: string): void {
-    if (this.arrayComponent.length < 4 && message !== '') {
+    if (this.arrayComponentId.length < 4 && message !== '') {
+      const dynamicComponent: ComponentRef<TooltipComponent> = this.hostView.createComponent(TooltipComponent)
 
+      this.arrayComponentId.push(dynamicComponent.location.nativeElement['__ngContext__'])
+      this.arrayComponent.push(dynamicComponent)
 
-      const dynamicComponent = this.hostView.createComponent(TooltipComponent)
-      this.arrayComponent.push(dynamicComponent.location.nativeElement['__ngContext__'])
-
-      this.arrayTwo.push(dynamicComponent)
       if (fill !== undefined) dynamicComponent.instance.fill = fill
       if (borderLeft !== undefined) dynamicComponent.instance.borderLeft = borderLeft
       dynamicComponent.instance.message = message
 
-      if (this.arrayComponent.length === 4) {
-        let count = 0
-        let min = this.arrayComponent[0]
-        // console.log(min)
-        this.arrayComponent.forEach((item, index, arr) => {
-          if (min > item) min = item
-          count = min
-          // console.log(count)
-        })
-        const index = this.arrayComponent.indexOf(count);
+      if (this.arrayComponentId.length === 4) {
+        let locationTooltip: number = this.arrayComponentId[0]
 
-        setTimeout(() => {
-          this.arrayTwo.forEach((item: any) => {
-            if (item.location.nativeElement['__ngContext__'] === count) {
+        this.arrayComponentId.forEach((item: number): void => {
+          if (locationTooltip > item) locationTooltip = item
+        })
+
+        const index: number = this.arrayComponentId.indexOf(locationTooltip);
+
+        this.arrayComponent.forEach((item: ComponentRef<TooltipComponent>): void => {
+          if (item.location.nativeElement['__ngContext__'] === locationTooltip) {
+            item.instance.hide = true
+          }
+        })
+
+        setTimeout((): void => {
+          this.arrayComponent.forEach((item: any): void => {
+            if (item.location.nativeElement['__ngContext__'] === locationTooltip) {
               item.destroy()
             }
           })
-          // this.arrayTwo[0].destroy()
-          // dynamicComponent.destroy()
-          this.arrayComponent.splice(index, 1);
-          this.arrayTwo.splice(index, 1)
-          console.log('При исчезновении ', this.arrayComponent)
-          console.log('При исчезновении ', this.arrayTwo)
-        }, 800)
 
-
-
-
-        // dynamicComponent.instance.hide = true
-
-
+          this.arrayComponentId.splice(index, 1);
+          this.arrayComponent.splice(index, 1)
+        }, 500)
       }
 
       dynamicComponent.instance.closeTooltip = (): void => {
+        const index: number = this.arrayComponentId.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
 
-        const index = this.arrayComponent.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
         if (index !== -1) {
-          this.arrayTwo.splice(index, 1)
-          this.arrayComponent.splice(index, 1);
+          this.arrayComponent.splice(index, 1)
+          this.arrayComponentId.splice(index, 1);
         }
+
         dynamicComponent.instance.hide = true
 
-        setTimeout(() => {
+        setTimeout((): void => {
           dynamicComponent.destroy()
-        }, 800)
-
-        console.log('После удаления ', this.arrayTwo)
-        console.log('После удаления ', this.arrayComponent)
+        }, 500)
       }
 
-      // setTimeout(() => {
-      //   const result = this.arrayComponent.includes(dynamicComponent.location.nativeElement['__ngContext__'])
-      //   if (result) --this.count
-      //   const index = this.arrayComponent.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
-      //   if (index !== -1) this.arrayComponent.splice(index, 1);
-      //   dynamicComponent.destroy()
-      // }, 15000)
+      setTimeout((): void => {
+        const index: number = this.arrayComponentId.indexOf(dynamicComponent.location.nativeElement['__ngContext__']);
 
-      // ++this.count
-      console.log('В конце ', this.arrayTwo)
-      console.log('В конце ', this.arrayComponent)
+        if (index !== -1) {
+          this.arrayComponent.splice(index, 1)
+          this.arrayComponentId.splice(index, 1);
+        }
+
+        dynamicComponent.destroy()
+      }, 15000)
     }
   }
 }
