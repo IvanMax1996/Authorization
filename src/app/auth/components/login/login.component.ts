@@ -1,12 +1,10 @@
 import {Component, ComponentRef, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
-import {PersistenceService} from "../../../shared/services/persistence.service";
-import {CurrentUserInterface} from "../../types/currentUser.interface";
 import {HostDirective} from "../../directives/host.directive";
 import {TooltipComponent} from "../../../shared/components/tooltip/tooltip.component";
 import {Router} from "@angular/router";
-import {TokenInterface} from "../../types/token.interface";
+
 
 @Component({
   selector: 'login',
@@ -17,7 +15,7 @@ export class LoginComponent implements OnInit {
   @ViewChild(HostDirective, {read: ViewContainerRef}) hostView!: ViewContainerRef
   form!: FormGroup
   hidePassword: boolean = true
-  response: CurrentUserInterface | undefined
+  response: any | undefined
   message: string | undefined
   arrayComponentId: Array<number> = []
   arrayComponent: Array<ComponentRef<TooltipComponent>> = []
@@ -25,7 +23,6 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private persistenceService: PersistenceService,
     private router: Router
   ) {}
 
@@ -38,39 +35,15 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const url: string = "http://51.158.107.27:82/api/login"
+    const url: string = "assets/data.json"
     const {checked, ...request} = this.form.value
 
-    this.authService.login(url, request).subscribe({
-      next: (data: CurrentUserInterface): void => {
+    this.authService.login(url).subscribe({
+      next: (data): void => {
         this.response = data
 
-        if (checked) {
-          const tokens: TokenInterface = data.tokens
-          this.persistenceService.setCookie('tokens', tokens)
-        }
-
-        this.router.navigate(['dashboard'],
-          {
-            queryParams: {
-              "avatar": this.response.userInfo.userAvatar,
-              "userName": this.response.userInfo.userName,
-              "userId": this.response.userInfo.userId
-            }
-          }).then();
-      },
-      error: error => {
-        switch(error.status) {
-          case 400:
-            this.message = error.error.errors[0]
-            break
-          case 429:
-            this.message = error.error.Message
-            break
-          case 0:
-            this.message = 'Неизвестная ошибка'
-            break
-        }
+        if (this.response.login === request.login && this.response.password === request.password) this.router.navigate(['dashboard']).then();
+        else this.message = 'Неправильный логин или пароль'
 
         if (this.arrayComponentId.length < 4) {
           const dynamicComponent: ComponentRef<TooltipComponent> = this.hostView.createComponent(TooltipComponent)

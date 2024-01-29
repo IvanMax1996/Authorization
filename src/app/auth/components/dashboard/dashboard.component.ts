@@ -17,15 +17,7 @@ export class DashboardComponent {
   arrayComponentId: Array<number> = []
   arrayComponent: Array<ComponentRef<TooltipComponent>> = []
 
-  constructor(private route: ActivatedRoute) {
-    route.queryParams.subscribe(
-      (queryParam): void => {
-        this.avatar = queryParam["avatar"]
-        this.ID = queryParam["userId"]
-        this.name = queryParam["userName"]
-      }
-    )
-  }
+  constructor() {}
 
   callTooltip(message: string, borderLeft?: string, fill?: string): void {
     if (this.arrayComponentId.length < 4 && message !== '') {
